@@ -19,6 +19,7 @@ function App() {
 
   const tabs = [
     { id: 'accueil', label: 'Accueil' },
+    { id: 'pourquoi', label: 'Pourquoi ?' },
     { id: 'uLearn', label: 'uLearn' },
     { id: 'uBreach', label: 'uBreach' },
     { id: 'uPhish', label: 'uPhish' },
@@ -200,6 +201,30 @@ function App() {
                   <div className="accueil-liste">
                     <img src="/Liste.png" alt="Liste" className="liste-image" />
                   </div>
+                </div>
+              </div>
+            </div>
+          ) : activeTab === 'pourquoi' ? (
+            <div className="pourquoi-content">
+              <div className="pourquoi-top-section">
+                <div className="pourquoi-image">
+                  <a href="https://bzinc.ca/" target="_blank" rel="noopener noreferrer" className="logobz-gros-link">
+                    <img src="/Logobz-gros.png" alt="Logo BZ" className="logobz-gros-image" />
+                  </a>
+                </div>
+                <div className="pourquoi-text">
+                  <h2 className="pourquoi-title">Pourquoi choisir la plateforme de sensibilisation de BZ ?</h2>
+                  <ul className="pourquoi-list">
+                    <li className="pourquoi-item">
+                      90 % des cyberattaques proviennent d'une mauvaise manipulation humaine (clic sur un pourriel, gestion de mot de passe, connexion à un réseau non-sécurisé), il est donc essentiel de développer la vigilance de votre équipe !
+                    </li>
+                    <li className="pourquoi-item">
+                      La grande majorité des assureurs exigent de la formation en continu pour les employés des organisations possédant une assurance « cyber risque ».
+                    </li>
+                    <li className="pourquoi-item">
+                      BZ possède toute l'expertise pour former votre personnel, évaluer votre posture de cybersécurité et vous accompagner dans les prochaines étapes de votre renforcement technologique (Loi 25, formations, IA, TI, Cloud)
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

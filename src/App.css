@@ -224,6 +224,83 @@
   object-fit: contain;
 }
 
+.pourquoi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pourquoi-top-section {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.pourquoi-image {
+  flex-shrink: 0;
+}
+
+.logobz-gros-link {
+  display: inline-block;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.logobz-gros-link:hover {
+  opacity: 0.8;
+}
+
+.logobz-gros-image {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.pourquoi-text {
+  flex: 1;
+  border: 2px solid #1e3a5f;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+}
+
+.pourquoi-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1e3a5f;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+}
+
+.pourquoi-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pourquoi-item {
+  font-size: 1.1rem;
+  color: #495057;
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.8;
+}
+
+.pourquoi-item::before {
+  content: "•";
+  color: #1e3a5f;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  font-size: 1.5rem;
+}
+
+.pourquoi-item:last-of-type {
+  margin-bottom: 0;
+}
+
 .ulearn-content {
   display: flex;
   flex-direction: column;
@@ -666,6 +743,20 @@
 
   .accueil-subtitle {
     font-size: 1.2rem;
+  }
+
+  .pourquoi-top-section {
+    flex-direction: column;
+  }
+
+  .pourquoi-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logobz-gros-image {
+    max-width: 100%;
   }
 
   .ulearn-top-section {
