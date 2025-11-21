@@ -400,6 +400,10 @@
   width: 100%;
 }
 
+.input-domaines {
+  width: 50%;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;

@@ -11,6 +11,8 @@ function App() {
   const [nombreDomaines, setNombreDomaines] = useState('')
   const [campagneActif, setCampagneActif] = useState(false)
   const [campagnePersonnalisees, setCampagnePersonnalisees] = useState('Non')
+  const [rapportActif, setRapportActif] = useState(false)
+  const [rapportFrequence, setRapportFrequence] = useState('Annuel')
   const [fraisImplantation, setFraisImplantation] = useState('')
   const [mensualite, setMensualite] = useState('')
   const [calculEnCours, setCalculEnCours] = useState(false)
@@ -22,6 +24,42 @@ function App() {
     { id: 'uPhish', label: 'uPhish' },
     { id: 'calculer', label: 'Calculer ma mensualité' }
   ]
+
+  // Fonction pour générer le résumé du courriel
+  const genererResumeEmail = () => {
+    let resume = "Bonjour,\n\n"
+    resume += "Je suis intéressé(e) par la Plateforme de formation et sensibilisation à la Cybersécurité.\n\n"
+    resume += "Voici un résumé de ma demande de devis :\n\n"
+    
+    resume += `Nombre d'utilisateurs : ${nombreUtilisateurs || 'Non spécifié'}\n\n`
+    
+    resume += "Options sélectionnées :\n"
+    resume += `- Capsules uLearn : ${ulearnActif ? 'Oui' : 'Non'}\n`
+    resume += `- Surveillance du Dark Web uBreach : ${ubreachActif ? 'Oui' : 'Non'}`
+    if (ubreachActif && nombreDomaines) {
+      resume += ` (${nombreDomaines} domaine${parseInt(nombreDomaines) > 1 ? 's' : ''} à surveiller)`
+    }
+    resume += "\n"
+    resume += `- Campagne de hameçonnage automatisées uPhish : ${campagneActif ? 'Oui' : 'Non'}`
+    if (campagneActif && campagnePersonnalisees !== 'Non') {
+      resume += ` (${campagnePersonnalisees} campagne${parseInt(campagnePersonnalisees) > 1 ? 's' : ''} personnalisée${parseInt(campagnePersonnalisees) > 1 ? 's' : ''})`
+    }
+    resume += "\n"
+    resume += `- Rapport : ${rapportActif ? 'Oui' : 'Non'}`
+    if (rapportActif) {
+      resume += ` (Fréquence : ${rapportFrequence})`
+    }
+    resume += "\n\n"
+    
+    resume += "Coûts calculés :\n"
+    resume += `- Frais d'implantation : ${fraisImplantation}\n`
+    resume += `- Mensualité : ${mensualite}\n\n`
+    
+    resume += "Je serais ravi(e) d'avoir plus d'informations sur ces services.\n\n"
+    resume += "Merci,\n"
+    
+    return resume
+  }
 
   // Fonction de calcul
   const calculerPrix = () => {
@@ -81,6 +119,23 @@ function App() {
         mens += 65
       } else if (users >= 51) {
         mens += 80
+      }
+
+      // Campagnes personnalisées (25$ par campagne mensuelle)
+      if (campagneActif && campagnePersonnalisees !== 'Non') {
+        const nbCampagnes = parseInt(campagnePersonnalisees) || 0
+        mens += nbCampagnes * 25
+      }
+
+      // Rapport (frais mensuels selon la fréquence)
+      if (rapportActif) {
+        if (rapportFrequence === 'Annuel') {
+          mens += 45 // 45$ par mois
+        } else if (rapportFrequence === 'Bi-annuel') {
+          mens += 75 // 75$ par mois
+        } else if (rapportFrequence === 'Trimestriels') {
+          mens += 120 // 120$ par mois
+        }
       }
 
       setFraisImplantation(`$${fraisImp.toFixed(2)}`)
@@ -167,13 +222,13 @@ function App() {
                 </div>
               </div>
               <div className="ulearn-dashboard">
-                <img src="/Dashboard uLearn.png" alt="Dashboard uLearn" className="dashboard-image" />
+                <img src="/uLearn V2.png" alt="Dashboard uLearn" className="dashboard-image" />
               </div>
             </div>
           ) : activeTab === 'uBreach' ? (
             <div className="ubreach-content">
               <div className="ubreach-image">
-                <img src="/uBreach.png" alt="uBreach" className="ubreach-image-file" />
+                <img src="/ubreach V2.png" alt="uBreach" className="ubreach-image-file" />
               </div>
               <div className="ubreach-top-section">
                 <div className="ubreach-text">
@@ -203,7 +258,7 @@ function App() {
                 </p>
               </div>
               <div className="uphish-image">
-                <img src="/uphish.png" alt="uPhish" className="uphish-image-file" />
+                <img src="/uphish V2.png" alt="uPhish" className="uphish-image-file" />
               </div>
             </div>
           ) : activeTab === 'calculer' ? (
@@ -268,14 +323,14 @@ function App() {
                             setNombreDomaines(val)
                           }
                         }}
-                        className="form-input"
+                        className="form-input input-domaines"
                       />
                     </div>
                   )}
                 </div>
 
                 <div className="form-group">
-                  <label>Campagne de hameçonnage automatisées :</label>
+                  <label>Campagne de hameçonnage automatisées uPhish :</label>
                   <div className="toggle-switch">
                     <div 
                       className={`toggle-container ${campagneActif ? 'active' : ''}`}
@@ -306,11 +361,40 @@ function App() {
                   )}
                 </div>
 
+                <div className="form-group">
+                  <label>Rapport :</label>
+                  <div className="toggle-switch">
+                    <div 
+                      className={`toggle-container ${rapportActif ? 'active' : ''}`}
+                      onClick={() => setRapportActif(!rapportActif)}
+                    >
+                      <span className="toggle-option toggle-non">Non</span>
+                      <span className="toggle-option toggle-oui">Oui</span>
+                      <div className="toggle-slider"></div>
+                    </div>
+                  </div>
+                  {rapportActif && (
+                    <div className="form-group-sub">
+                      <label htmlFor="rapport-frequence">Fréquence du rapport :</label>
+                      <select
+                        id="rapport-frequence"
+                        value={rapportFrequence}
+                        onChange={(e) => setRapportFrequence(e.target.value)}
+                        className="form-select"
+                      >
+                        <option value="Annuel">Annuel</option>
+                        <option value="Bi-annuel">Bi-annuel</option>
+                        <option value="Trimestriels">Trimestriels</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+
                 <button
                   type="button"
                   onClick={calculerPrix}
                   className="calculer-btn"
-                  disabled={(!ulearnActif && !ubreachActif && !campagneActif) || calculEnCours}
+                  disabled={(!ulearnActif && !ubreachActif && !campagneActif && !rapportActif) || calculEnCours}
                 >
                   {calculEnCours ? 'Calcul en cours...' : 'Calculer mon prix'}
                 </button>
@@ -336,6 +420,27 @@ function App() {
                     />
                   </div>
                 </div>
+
+                {mensualite && mensualite !== 'Calcul en cours...' && fraisImplantation && fraisImplantation !== 'Calcul en cours...' && (
+                  <a
+                    href={`mailto:ventes@bzinc.ca?subject=Demande de devis - Plateforme de formation et sensibilisation&body=${encodeURIComponent(genererResumeEmail())}`}
+                    className="go-btn"
+                    style={{
+                      display: 'inline-block',
+                      marginTop: '20px',
+                      padding: '12px 30px',
+                      backgroundColor: '#007bff',
+                      color: 'white',
+                      textDecoration: 'none',
+                      borderRadius: '5px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      textAlign: 'center'
+                    }}
+                  >
+                    GO
+                  </a>
+                )}
               </div>
             </div>
           ) : (
