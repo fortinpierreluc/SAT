@@ -373,7 +373,7 @@ function App() {
                         id="campagne-perso"
                         value={campagnePersonnalisees}
                         onChange={(e) => setCampagnePersonnalisees(e.target.value)}
-                        className="form-select"
+                        className="form-select input-campagnes"
                       >
                         <option value="Non">Non</option>
                         <option value="1">1</option>
