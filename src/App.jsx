@@ -66,7 +66,7 @@ function App() {
       resume += ` (${nombreDomaines} domaine${parseInt(nombreDomaines) > 1 ? 's' : ''} à surveiller)`
     }
     resume += "\n"
-    resume += `- Campagne de hameçonnage automatisées uPhish : ${campagneActif ? 'Oui' : 'Non'}`
+    resume += `- Campagnes d'hameçonnage automatisées uPhish : ${campagneActif ? 'Oui' : 'Non'}`
     if (campagneActif && campagnePersonnalisees !== 'Non') {
       resume += ` (${campagnePersonnalisees} campagne${parseInt(campagnePersonnalisees) > 1 ? 's' : ''} personnalisée${parseInt(campagnePersonnalisees) > 1 ? 's' : ''})`
     }
@@ -265,7 +265,7 @@ function App() {
                     <ul className="accueil-list">
                       <li><strong>uLearn</strong> : Capsules de formation personnalisées pour chaque membre de votre équipe.</li>
                       <li><strong>uBreach</strong> : Surveillance continue du Dark Web pour détecter toute fuite d'informations provenant de vos adresses courriel.</li>
-                      <li><strong>uPhish</strong> : Testez vos employés avec des campagnes d'hameçonnage automatisées et sur mesure.</li>
+                      <li><strong>uPhish</strong> : Testez vos employés avec des campagnes d'hameçonnage automatisées et/ou sur mesure.</li>
                     </ul>
                   </div>
                 </div>
@@ -353,13 +353,18 @@ function App() {
             <div className="uphish-content">
               <div className="uphish-text">
                 <p className="uphish-paragraph">
-                  uPhish est votre outil incontournable pour savoir si votre organisation est vigilante en termes de courriels suspects&nbsp;!
+                  uPhish vous permet de créer plusieurs campagnes d'hameçonnage afin de mesurer la réactivité et la prudence de vos utilisateurs.
                 </p>
                 <p className="uphish-paragraph">
-                  Envoyez-leur des courriels suspects à intervalle régulier et suivez les résultats&nbsp;!
+                  Deux approches complémentaires s'offrent à vous :
                 </p>
                 <p className="uphish-paragraph">
-                  Lorsque vous les jugez prêts, faites-leur parvenir un courriel personnalisé à l'aide de notre équipe de cybersécurité pour voir jusqu'où leur vigilance peut aller&nbsp;!
+                  <strong>Auto-Phish</strong><br />
+                  Configurez des campagnes automatisées qui envoient régulièrement des courriels frauduleux à vos équipes. Ces tests reproduisent des scénarios réalistes et permettent de suivre les taux de clics et de compromission sur une base régulière.
+                </p>
+                <p className="uphish-paragraph">
+                  <strong>Campagnes personnalisées</strong><br />
+                  Concevez des courriels sur mesure adaptés à votre contexte organisationnel pour tester des scénarios plus sophistiqués. Notre équipe de cybersécurité vous accompagnera dans la création d'attaques ciblées afin d'identifier les faiblesses spécifiques et vous fournit un rapport détaillé visant à renforcer la formation de l'ensemble de votre personnel.
                 </p>
               </div>
               <div className="uphish-image">
@@ -435,7 +440,7 @@ function App() {
                 </div>
 
                 <div className="form-group">
-                  <label>Campagne de hameçonnage automatisées uPhish :</label>
+                  <label>Campagnes d'hameçonnage automatisées uPhish :</label>
                   <div className="toggle-switch">
                     <div 
                       className={`toggle-container ${campagneActif ? 'active' : ''}`}
