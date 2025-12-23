@@ -353,13 +353,13 @@ function App() {
             <div className="uphish-content">
               <div className="uphish-text">
                 <p className="uphish-paragraph">
-                  uPhish est votre outil incontournable pour savoir si votre organisation est vigilante en termes de courriels suspects !
+                  uPhish est votre outil incontournable pour savoir si votre organisation est vigilante en termes de courriels suspects&nbsp;!
                 </p>
                 <p className="uphish-paragraph">
-                  Envoyez-leur des courriels suspects à intervalle régulier et suivez les résultats !
+                  Envoyez-leur des courriels suspects à intervalle régulier et suivez les résultats&nbsp;!
                 </p>
                 <p className="uphish-paragraph">
-                  Lorsque vous les jugez prêts, faites-leur parvenir un courriel personnalisé à l'aide de notre équipe de cybersécurité pour voir jusqu'où leur vigilance peut aller !
+                  Lorsque vous les jugez prêts, faites-leur parvenir un courriel personnalisé à l'aide de notre équipe de cybersécurité pour voir jusqu'où leur vigilance peut aller&nbsp;!
                 </p>
               </div>
               <div className="uphish-image">
@@ -559,7 +559,7 @@ function App() {
               <div className="service-cards-grid">
                 <div className="service-card service-card-purple">
                   <div className="service-card-icon-centered">🛡️</div>
-                  <h3 className="service-card-title">Prise en Charge Cybersécurité</h3>
+                  <h3 className="service-card-title">Prise en charge cybersécurité</h3>
                   <p className="service-card-description">
                     De l'évaluation initiale au suivi continu : planification stratégique, implémentation progressive, documentation professionnelle et amélioration continue de votre posture de sécurité
                   </p>
@@ -590,7 +590,7 @@ function App() {
                   className="aller-plus-loin-btn"
                 >
                   Prêt à passer la prochaine étape ?<br />
-                  Rencontrer un de nos directeurs de compte
+                  Rencontrez un de nos directeurs de compte
                 </a>
               </div>
             </div>
