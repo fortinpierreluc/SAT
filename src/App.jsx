@@ -16,20 +16,45 @@ function App() {
   const [fraisImplantation, setFraisImplantation] = useState('')
   const [mensualite, setMensualite] = useState('')
   const [calculEnCours, setCalculEnCours] = useState(false)
+  
+  // États pour le popup de contact
+  const [popupVisible, setPopupVisible] = useState(false)
+  const [nom, setNom] = useState('')
+  const [titre, setTitre] = useState('')
+  const [courriel, setCourriel] = useState('')
+  const [entreprise, setEntreprise] = useState('')
+  
+  // État pour le popup "Pourquoi BZ"
+  const [popupPourquoiBZVisible, setPopupPourquoiBZVisible] = useState(false)
+  
+  // État pour le popup "Plus de détails"
+  const [popupDetailsVisible, setPopupDetailsVisible] = useState(false)
 
   const tabs = [
     { id: 'accueil', label: 'Accueil' },
-    { id: 'pourquoi', label: 'Pourquoi ?' },
+    { id: 'pourquoi', label: 'Bénéfices' },
     { id: 'uLearn', label: 'uLearn' },
     { id: 'uBreach', label: 'uBreach' },
     { id: 'uPhish', label: 'uPhish' },
-    { id: 'calculer', label: 'Calculer ma mensualité' }
+    { id: 'calculer', label: 'Calculer ma mensualité' },
+    { id: 'allerPlusLoin', label: 'Aller plus loin !' }
   ]
 
-  // Fonction pour générer le résumé du courriel
+  // Fonction pour générer le résumé du courriel (calculateur)
   const genererResumeEmail = () => {
     let resume = "Bonjour,\n\n"
     resume += "Je suis intéressé(e) par la Plateforme de formation et sensibilisation à la Cybersécurité.\n\n"
+    
+    // Informations de contact
+    if (nom || titre || courriel || entreprise) {
+      resume += "Mes coordonnées :\n"
+      if (nom) resume += `- Nom : ${nom}\n`
+      if (titre) resume += `- Titre : ${titre}\n`
+      if (courriel) resume += `- Courriel : ${courriel}\n`
+      if (entreprise) resume += `- Entreprise/Organisation : ${entreprise}\n`
+      resume += "\n"
+    }
+    
     resume += "Voici un résumé de ma demande de devis :\n\n"
     
     resume += `Nombre d'utilisateurs : ${nombreUtilisateurs || 'Non spécifié'}\n\n`
@@ -60,6 +85,50 @@ function App() {
     resume += "Merci,\n"
     
     return resume
+  }
+  
+  // Fonction pour générer le courriel de demande de détails
+  const genererEmailDetails = () => {
+    let resume = "Bonjour,\n\n"
+    resume += "Je souhaiterais obtenir plus de détails sur la Plateforme de formation et sensibilisation à la Cybersécurité.\n\n"
+    
+    resume += "Mes coordonnées :\n"
+    resume += `- Nom : ${nom}\n`
+    resume += `- Titre : ${titre}\n`
+    resume += `- Courriel : ${courriel}\n`
+    resume += `- Entreprise/Organisation : ${entreprise}\n\n`
+    
+    resume += "J'aimerais en savoir plus sur vos solutions uLearn, uBreach et uPhish.\n\n"
+    resume += "Merci de me contacter pour discuter de mes besoins.\n\n"
+    resume += "Cordialement,\n"
+    
+    return resume
+  }
+  
+  // Fonction pour vérifier si tous les champs du popup sont remplis
+  const tousLesChampsRemplis = () => {
+    return nom.trim() !== '' && titre.trim() !== '' && courriel.trim() !== '' && entreprise.trim() !== ''
+  }
+  
+  // Fonction pour envoyer le courriel et fermer le popup (calculateur)
+  const envoyerCourriel = () => {
+    if (tousLesChampsRemplis()) {
+      window.location.href = `mailto:ventes@bzinc.ca?subject=Demande de devis - Plateforme de formation et sensibilisation&body=${encodeURIComponent(genererResumeEmail())}`
+      setPopupVisible(false)
+    }
+  }
+  
+  // Fonction pour envoyer le courriel de demande de détails
+  const envoyerCourrielDetails = () => {
+    if (tousLesChampsRemplis()) {
+      window.location.href = `mailto:ventes@bzinc.ca?subject=Demande d'information - Plateforme de formation et sensibilisation&body=${encodeURIComponent(genererEmailDetails())}`
+      setPopupDetailsVisible(false)
+      // Réinitialiser les champs
+      setNom('')
+      setTitre('')
+      setCourriel('')
+      setEntreprise('')
+    }
   }
 
   // Fonction de calcul
@@ -150,7 +219,7 @@ function App() {
       <header className="header">
         <div className="logo-container">
           <img 
-            src="/logo-bz.png" 
+            src="/Logobz-gros.png" 
             alt="Logo BZ" 
             className="logo clickable-logo logo-bz"
             onClick={() => setActiveTab('accueil')}
@@ -163,6 +232,12 @@ function App() {
           />
         </div>
         <h1>Plateforme de formation et sensibilisation à la Cybersécurité</h1>
+        <button 
+          className="pourquoi-bz-btn"
+          onClick={() => setPopupPourquoiBZVisible(true)}
+        >
+          Pourquoi la cybersécurité chez BZ ?
+        </button>
       </header>
 
       <div className="tabs-container">
@@ -183,14 +258,14 @@ function App() {
             <div className="accueil-content">
               <div className="accueil-top-section">
                 <div className="accueil-text">
-                  <h2 className="accueil-title">Rendez votre organisation cyber résistante tout en contrôlant en direct la progression globale et individuelle de vos <span className="no-wrap">employés !</span></h2>
+                  <h2 className="accueil-title">Rendez votre organisation cyber‑résistante, tout en suivant en temps réel la progression globale et individuelle de vos <span className="no-wrap">employés !</span></h2>
                   
                   <div className="accueil-options">
-                    <h3 className="accueil-subtitle">Trois options distinctes pour augmenter votre posture de sécurité !</h3>
+                    <h3 className="accueil-subtitle">Trois solutions clés pour renforcer votre posture de sécurité :</h3>
                     <ul className="accueil-list">
-                      <li><strong>uLearn</strong> : Capsules de formations personnalisés pour chaque membre de votre équipe !</li>
-                      <li><strong>uBreach</strong> : Surveillance en continu du Dark Web pour détecter toute fuite d'information provenant de vos adresses courriel</li>
-                      <li><strong>uPhish</strong> : Testez vos employés avec des campagnes d'hameçonnage automatisées et personnalisées !</li>
+                      <li><strong>uLearn</strong> : Capsules de formation personnalisées pour chaque membre de votre équipe.</li>
+                      <li><strong>uBreach</strong> : Surveillance continue du Dark Web pour détecter toute fuite d'informations provenant de vos adresses courriel.</li>
+                      <li><strong>uPhish</strong> : Testez vos employés avec des campagnes d'hameçonnage automatisées et sur mesure.</li>
                     </ul>
                   </div>
                 </div>
@@ -198,9 +273,9 @@ function App() {
                   <div className="accueil-cadran">
                     <img src="/Cadran.png" alt="Cadran" className="cadran-image" />
                   </div>
-                  <div className="accueil-liste">
-                    <img src="/Liste.png" alt="Liste" className="liste-image" />
-                  </div>
+                <div className="accueil-liste">
+                  <img src="/Liste V2.jpg" alt="Liste" className="liste-image" />
+                </div>
                 </div>
               </div>
             </div>
@@ -213,16 +288,21 @@ function App() {
                   </a>
                 </div>
                 <div className="pourquoi-text">
-                  <h2 className="pourquoi-title">Pourquoi choisir la plateforme de sensibilisation de BZ ?</h2>
+                  <h2 className="pourquoi-title">Dès le départ, vous verrez les avantages de la plateforme de sensibilisation USecure !</h2>
                   <ul className="pourquoi-list">
                     <li className="pourquoi-item">
-                      90 % des cyberattaques proviennent d'une mauvaise manipulation humaine (clic sur un pourriel, gestion de mot de passe, connexion à un réseau non-sécurisé), il est donc essentiel de développer la vigilance de votre équipe !
+                      Plus de 80 % des cyberattaques proviennent d'une erreur humaine (clic sur un pourriel, mauvaise gestion des mots de passe, connexion à un réseau non sécurisé). Il est donc crucial de renforcer la vigilance de votre équipe !
                     </li>
                     <li className="pourquoi-item">
-                      La grande majorité des assureurs exigent de la formation en continu pour les employés des organisations possédant une assurance « cyber risque ».
+                      La grande majorité des assureurs exige désormais une formation continue pour les employés des organisations bénéficiant d'une assurance « cyber risque ».
                     </li>
-                    <li className="pourquoi-item">
-                      BZ possède toute l'expertise pour former votre personnel, évaluer votre posture de cybersécurité et vous accompagner dans les prochaines étapes de votre renforcement technologique (Loi 25, formations, IA, TI, Cloud)
+                    <li className="pourquoi-item pourquoi-item-with-sublist">
+                      BZ met son expertise à votre service pour :
+                      <ul className="pourquoi-sublist">
+                        <li>Former votre personnel</li>
+                        <li>Évaluer votre posture de cybersécurité</li>
+                        <li>Vous accompagner dans les prochaines étapes de votre renforcement technologique (Loi 25, formations, IA, infrastructure TI, Cloud)</li>
+                      </ul>
                     </li>
                   </ul>
                 </div>
@@ -236,13 +316,13 @@ function App() {
                 </div>
                 <div className="ulearn-text">
                   <p className="ulearn-paragraph">
-                    Avec la campagne de formation uLearn, chaque employé remplit un questionnaire pour identifier ses forces et ses faiblesses. Ensuite, il reçoit des courtes capsules vidéo avec questions pour tester ses éléments à travailler.
+                    Avec la campagne de formation uLearn, chaque employé remplit un questionnaire afin d'identifier ses forces et ses axes d'amélioration. Ensuite, il reçoit des capsules vidéo courtes, accompagnées de questions pour tester les compétences à développer.
                   </p>
                   <p className="ulearn-paragraph">
-                    Ces capsules sont envoyées de façon automatique et périodiquement, à un intervalle déterminé par vous.
+                    Ces capsules sont envoyées automatiquement et de manière périodique, selon un intervalle défini par vous.
                   </p>
                   <p className="ulearn-paragraph">
-                    Votre administrateur est aussi en mesure de suivre l'évolution des participants à l'aide d'un tableau de bord intégré.
+                    Votre administrateur est aussi en mesure de suivre l'évolution des participants grâce à un tableau de bord intégré.
                   </p>
                 </div>
               </div>
@@ -253,15 +333,15 @@ function App() {
           ) : activeTab === 'uBreach' ? (
             <div className="ubreach-content">
               <div className="ubreach-image">
-                <img src="/ubreach V2.png" alt="uBreach" className="ubreach-image-file" />
+                <img src="/V3.png" alt="uBreach" className="ubreach-image-file" />
               </div>
               <div className="ubreach-top-section">
                 <div className="ubreach-text">
                   <p className="ubreach-paragraph">
-                    Avec uBreach, pas besoin de vous demander si vos adresses courriel ont été compromises : On s'en occupe pour vous !
+                    Avec uBreach, plus besoin de vous demander si vos adresses courriel ont été compromises : On s'en occupe pour vous !
                   </p>
                   <p className="ubreach-paragraph">
-                    Chaque nom de domaine est analysé en continu et vous recevrez un avis si des informations ont pu fuir votre réseau professionnel.
+                    Chaque nom de domaine est surveillé en continu et vous recevrez un avertissement si des informations ont pu fuir depuis votre réseau professionnel.
                   </p>
                 </div>
                 <div className="ubreach-cyberto">
@@ -273,13 +353,13 @@ function App() {
             <div className="uphish-content">
               <div className="uphish-text">
                 <p className="uphish-paragraph">
-                  uPhish est votre outil ultime pour savoir si votre organisation est prudente en termes de courriels suspects !
+                  uPhish est votre outil incontournable pour savoir si votre organisation est vigilante en termes de courriels suspects !
                 </p>
                 <p className="uphish-paragraph">
-                  Envoyez-leur des courriels suspects à intervalle réguliers et suivez les résultats !
+                  Envoyez-leur des courriels suspects à intervalle régulier et suivez les résultats !
                 </p>
                 <p className="uphish-paragraph">
-                  Lorsque vous les sentez prêts, faites-leur parvenir un courriel personnalisé à l'aide de notre équipe de cybersécurité pour voir jusqu'où leur prudence se rend !
+                  Lorsque vous les jugez prêts, faites-leur parvenir un courriel personnalisé à l'aide de notre équipe de cybersécurité pour voir jusqu'où leur vigilance peut aller !
                 </p>
               </div>
               <div className="uphish-image">
@@ -447,8 +527,8 @@ function App() {
                 </div>
 
                 {mensualite && mensualite !== 'Calcul en cours...' && fraisImplantation && fraisImplantation !== 'Calcul en cours...' && (
-                  <a
-                    href={`mailto:ventes@bzinc.ca?subject=Demande de devis - Plateforme de formation et sensibilisation&body=${encodeURIComponent(genererResumeEmail())}`}
+                  <button
+                    onClick={() => setPopupVisible(true)}
                     className="go-btn"
                     style={{
                       display: 'inline-block',
@@ -457,15 +537,61 @@ function App() {
                       backgroundColor: '#007bff',
                       color: 'white',
                       textDecoration: 'none',
+                      border: 'none',
                       borderRadius: '5px',
                       fontWeight: 'bold',
                       cursor: 'pointer',
-                      textAlign: 'center'
+                      textAlign: 'center',
+                      fontSize: '16px'
                     }}
                   >
-                    GO
-                  </a>
+                    Je veux aller de l'avant !
+                  </button>
                 )}
+              </div>
+            </div>
+          ) : activeTab === 'allerPlusLoin' ? (
+            <div className="aller-plus-loin-content">
+              <div className="aller-plus-loin-header">
+                <h2 className="aller-plus-loin-title">Prêt à transformer votre cybersécurité ?</h2>
+                <p className="aller-plus-loin-subtitle">Découvrez nos services premium pour une protection complète et sur mesure</p>
+              </div>
+              <div className="service-cards-grid">
+                <div className="service-card service-card-purple">
+                  <div className="service-card-icon-centered">🛡️</div>
+                  <h3 className="service-card-title">Prise en Charge Cybersécurité</h3>
+                  <p className="service-card-description">
+                    De l'évaluation initiale au suivi continu : planification stratégique, implémentation progressive, documentation professionnelle et amélioration continue de votre posture de sécurité
+                  </p>
+                </div>
+
+                <div className="service-card service-card-teal">
+                  <div className="service-card-icon-centered">🎓</div>
+                  <h3 className="service-card-title">Formations aux employés</h3>
+                  <p className="service-card-description">
+                    Programmes adaptés pour réduire les risques humains et renforcer la culture sécuritaire
+                  </p>
+                </div>
+
+                <div className="service-card service-card-pink">
+                  <div className="service-card-icon-centered">📋</div>
+                  <h3 className="service-card-title">Conformité Loi 25</h3>
+                  <p className="service-card-description">
+                    Protection des données personnelles et accompagnement pour atteindre la conformité
+                  </p>
+                </div>
+              </div>
+              
+              <div className="aller-plus-loin-cta">
+                <a 
+                  href="https://outlook.office.com/bookwithme/user/9e650cafaac84e6eb1c82dee6c83154c@bzinc.ca/meetingtype/8XcuW2p9ZEGNzbv6-3wpWQ2?anonymous&ep=mlink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="aller-plus-loin-btn"
+                >
+                  Prêt à passer la prochaine étape ?<br />
+                  Rencontrer un de nos directeurs de compte
+                </a>
               </div>
             </div>
           ) : (
@@ -477,10 +603,251 @@ function App() {
         </div>
       </div>
 
+      {/* Popup "Pourquoi BZ" */}
+      {popupPourquoiBZVisible && (
+        <div className="popup-overlay" onClick={() => setPopupPourquoiBZVisible(false)}>
+          <div className="popup-bz-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="popup-bz-title">Pourquoi choisir BZ pour votre cybersécurité ?</h2>
+            <p className="popup-bz-subtitle">Une approche complète basée sur le cadre NIST 2.0</p>
+            
+            {/* Section Approche Collaborative */}
+            <div className="bz-collaborative-section">
+              <h3 className="bz-collaborative-title">Notre Approche Collaborative</h3>
+              
+              <div className="bz-collaborative-grid">
+                <div className="bz-collaborative-card">
+                  <div className="bz-collaborative-icon">🎯</div>
+                  <h4 className="bz-collaborative-card-title">Vision Stratégique</h4>
+                  <p className="bz-collaborative-card-text">
+                    Alignement des initiatives TI avec vos objectifs d'affaires
+                  </p>
+                </div>
+                
+                <div className="bz-collaborative-card">
+                  <div className="bz-collaborative-icon">💡</div>
+                  <h4 className="bz-collaborative-card-title">Innovation Continue</h4>
+                  <p className="bz-collaborative-card-text">
+                    Identification d'opportunités de croissance et de différenciation
+                  </p>
+                </div>
+                
+                <div className="bz-collaborative-card">
+                  <div className="bz-collaborative-icon">⚙️</div>
+                  <h4 className="bz-collaborative-card-title">Excellence Technique</h4>
+                  <p className="bz-collaborative-card-text">
+                    Solutions robustes et évolutives adaptées à vos besoins
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Section Cadre NIST 2.0 */}
+            <div className="bz-nist-section">
+              <h3 className="bz-section-title">Notre Maîtrise du Cadre NIST 2.0</h3>
+              <div className="bz-features-grid">
+                <div className="bz-feature-card">
+                  <div className="bz-feature-icon">⚡</div>
+                  <h3 className="bz-feature-title">Maîtrise Approfondie</h3>
+                  <p className="bz-feature-text">
+                    Notre équipe maîtrise le cadre NIST 2.0 dans ses moindres détails. Nous comprenons non seulement les fonctions, mais aussi comment les implémenter efficacement à travers les 6 fonctions essentielles : Gouverner, Identifier, Protéger, Détecter, Répondre et Reprendre.
+                  </p>
+                </div>
+                
+                <div className="bz-feature-card">
+                  <div className="bz-feature-icon">🎯</div>
+                  <h3 className="bz-feature-title">Approche Holistique</h3>
+                  <p className="bz-feature-text">
+                    Nous ne faisons pas les choses à moitié. Nous implémentons le NIST 2.0 de manière complète, en couvrant tous les aspects de la cybersécurité à travers trois axes : l'humain, les processus et la technologie.
+                  </p>
+                </div>
+                
+                <div className="bz-feature-card">
+                  <div className="bz-feature-icon">📈</div>
+                  <h3 className="bz-feature-title">Résultats Mesurables</h3>
+                  <p className="bz-feature-text">
+                    Nous mesurons votre progression selon le cadre NIST 2.0. Vous voyez clairement où vous en êtes et où vous allez avec nos programmes personnalisables adaptés à vos besoins spécifiques.
+                  </p>
+                </div>
+                
+                <div className="bz-feature-card">
+                  <div className="bz-feature-icon">🏆</div>
+                  <h3 className="bz-feature-title">Excellence Continue</h3>
+                  <p className="bz-feature-text">
+                    L'excellence n'est pas un objectif, c'est un processus continu. Nous vous accompagnons dans votre évolution constante pour renforcer votre cyber-résilience.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              className="popup-bz-close-btn"
+              onClick={() => setPopupPourquoiBZVisible(false)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Popup de contact (calculateur) */}
+      {popupVisible && (
+        <div className="popup-overlay" onClick={() => setPopupVisible(false)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="popup-title">Vos informations</h2>
+            <p className="popup-description">Veuillez remplir tous les champs pour continuer</p>
+            
+            <div className="popup-form">
+              <div className="popup-form-group">
+                <label htmlFor="popup-nom">Nom *</label>
+                <input
+                  type="text"
+                  id="popup-nom"
+                  value={nom}
+                  onChange={(e) => setNom(e.target.value)}
+                  className="popup-input"
+                  placeholder="Votre nom"
+                />
+              </div>
+              
+              <div className="popup-form-group">
+                <label htmlFor="popup-titre">Titre *</label>
+                <input
+                  type="text"
+                  id="popup-titre"
+                  value={titre}
+                  onChange={(e) => setTitre(e.target.value)}
+                  className="popup-input"
+                  placeholder="Votre titre"
+                />
+              </div>
+              
+              <div className="popup-form-group">
+                <label htmlFor="popup-courriel">Courriel *</label>
+                <input
+                  type="email"
+                  id="popup-courriel"
+                  value={courriel}
+                  onChange={(e) => setCourriel(e.target.value)}
+                  className="popup-input"
+                  placeholder="votre@courriel.com"
+                />
+              </div>
+              
+              <div className="popup-form-group">
+                <label htmlFor="popup-entreprise">Entreprise/Organisation *</label>
+                <input
+                  type="text"
+                  id="popup-entreprise"
+                  value={entreprise}
+                  onChange={(e) => setEntreprise(e.target.value)}
+                  className="popup-input"
+                  placeholder="Nom de votre entreprise"
+                />
+              </div>
+              
+              <div className="popup-buttons">
+                <button
+                  onClick={() => setPopupVisible(false)}
+                  className="popup-btn popup-btn-cancel"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={envoyerCourriel}
+                  className={`popup-btn popup-btn-submit ${!tousLesChampsRemplis() ? 'disabled' : ''}`}
+                  disabled={!tousLesChampsRemplis()}
+                >
+                  Prêt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Popup de demande de détails */}
+      {popupDetailsVisible && (
+        <div className="popup-overlay" onClick={() => setPopupDetailsVisible(false)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="popup-title">Demande d'information</h2>
+            <p className="popup-description">Veuillez remplir tous les champs pour continuer</p>
+            
+            <div className="popup-form">
+              <div className="popup-form-group">
+                <label htmlFor="popup-details-nom">Nom *</label>
+                <input
+                  type="text"
+                  id="popup-details-nom"
+                  value={nom}
+                  onChange={(e) => setNom(e.target.value)}
+                  className="popup-input"
+                  placeholder="Votre nom"
+                />
+              </div>
+              
+              <div className="popup-form-group">
+                <label htmlFor="popup-details-titre">Titre *</label>
+                <input
+                  type="text"
+                  id="popup-details-titre"
+                  value={titre}
+                  onChange={(e) => setTitre(e.target.value)}
+                  className="popup-input"
+                  placeholder="Votre titre"
+                />
+              </div>
+              
+              <div className="popup-form-group">
+                <label htmlFor="popup-details-courriel">Courriel *</label>
+                <input
+                  type="email"
+                  id="popup-details-courriel"
+                  value={courriel}
+                  onChange={(e) => setCourriel(e.target.value)}
+                  className="popup-input"
+                  placeholder="votre@courriel.com"
+                />
+              </div>
+              
+              <div className="popup-form-group">
+                <label htmlFor="popup-details-entreprise">Entreprise/Organisation *</label>
+                <input
+                  type="text"
+                  id="popup-details-entreprise"
+                  value={entreprise}
+                  onChange={(e) => setEntreprise(e.target.value)}
+                  className="popup-input"
+                  placeholder="Nom de votre entreprise"
+                />
+              </div>
+              
+              <div className="popup-buttons">
+                <button
+                  onClick={() => setPopupDetailsVisible(false)}
+                  className="popup-btn popup-btn-cancel"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={envoyerCourrielDetails}
+                  className={`popup-btn popup-btn-submit ${!tousLesChampsRemplis() ? 'disabled' : ''}`}
+                  disabled={!tousLesChampsRemplis()}
+                >
+                  Envoyer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <footer className="footer">
-        <a href="mailto:ventes@bzinc.ca" className="contact-link">
+        <button 
+          onClick={() => setPopupDetailsVisible(true)}
+          className="contact-link"
+        >
           Je veux plus de détails !
-        </a>
+        </button>
       </footer>
     </div>
   )
