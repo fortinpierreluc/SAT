@@ -654,7 +654,7 @@ function App() {
                   <div className="bz-feature-icon">⚡</div>
                   <h3 className="bz-feature-title">Maîtrise Approfondie</h3>
                   <p className="bz-feature-text">
-                    Notre équipe maîtrise le cadre NIST 2.0 dans ses moindres détails. Nous comprenons non seulement les fonctions, mais aussi comment les implémenter efficacement à travers les 6 fonctions essentielles : Gouverner, Identifier, Protéger, Détecter, Répondre et Reprendre.
+                    Notre équipe possède une expertise approfondie du cadre NIST 2.0. Nous maîtrisons non seulement ses principes fondamentaux, mais également leur mise en œuvre efficace à travers les six fonctions clés : Gouverner, Identifier, Protéger, Détecter, Répondre et Reprendre.
                   </p>
                 </div>
                 
