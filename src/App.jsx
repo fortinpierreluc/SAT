@@ -420,7 +420,7 @@ function App() {
                   </div>
                   {ubreachActif && (
                     <div className="form-group-sub">
-                      <label htmlFor="domaines">Nombre de domaine à surveiller :</label>
+                      <label htmlFor="domaines">Nombre de domaine(s) à surveiller :</label>
                       <input
                         type="number"
                         id="domaines"
@@ -453,7 +453,7 @@ function App() {
                   </div>
                   {campagneActif && (
                     <div className="form-group-sub">
-                      <label htmlFor="campagne-perso">Ajout de campagne personnalisées :</label>
+                      <label htmlFor="campagne-perso">Ajout de campagne(s) personnalisée(s) :</label>
                       <select
                         id="campagne-perso"
                         value={campagnePersonnalisees}
