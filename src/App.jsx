@@ -177,7 +177,7 @@ function App() {
           setMensualite('')
           return
         }
-        mens += domaines * 12
+        mens += domaines * 15
       }
 
       // Campagne de hameçonnage (toujours calculé)
